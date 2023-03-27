@@ -9,24 +9,28 @@ const App = () => {
 
   return (
     <div>
-      <header course = {course}>
+      <header>
         <h1>{course}</h1>
       </header>
       <content>  
-        <p>
-          {part1} {exercises1}
-        </p>
+        <part>
+        <p>{part1} {exercises1}</p>
+        </part>
+        <part>
         <p>
           {part2} {exercises2}
         </p>
+        </part>
+        <part>
         <p>
           {part3} {exercises3}
         </p>
+        </part>
       </content>
       <total>
-
-      </total>
         <p>Number of exercises {exercises1 + exercises2 + exercises3}</p>
+      </total>
+        
     </div>
   )
 }

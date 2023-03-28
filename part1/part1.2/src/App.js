@@ -12,27 +12,29 @@ const App = () => {
       <header>
         <h1>{course}</h1>
       </header>
-      <content>  
-        <part>
-        <p>{part1} {exercises1}</p>
-        </part>
-        <part>
-        <p>
-          {part2} {exercises2}
-        </p>
-        </part>
-        <part>
-        <p>
-          {part3} {exercises3}
-        </p>
-        </part>
-      </content>
+      <content>
+          <Content part1 = {part1}/>
+      
+          <Content part = {part2}/>
+    
+          <Content part = {part3}/>
+       </content>
       <total>
         <p>Number of exercises {exercises1 + exercises2 + exercises3}</p>
       </total>
         
     </div>
   )
+}
+
+const Content = (part) => {
+  return(
+  <div>
+      <p>{part}</p>
+  </div>
+  )
+
+
 }
 
 export default App

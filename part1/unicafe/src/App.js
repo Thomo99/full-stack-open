@@ -6,7 +6,7 @@ const Button = ({update, text}) => {
   )
 }
 
-
+const Display = ({text, value, text2 = ''}) => <p>{text} {value}{text2}</p>
 
 const App = () => {
   // save clicks of each button to its own state
@@ -54,12 +54,13 @@ const App = () => {
       </div>
       <div>
         <h1>Statistics</h1>
-        <p>Good {good}</p>
-        <p>Neutral {neutral}</p>
-        <p>Bad {bad}</p>
-        <p>Total {total}</p>
-        <p>Average {average}</p>
-        <p>Positive {positive}%</p>
+        <Display text = 'Good' value={good}/>
+        <Display text = 'Neutral' value={neutral}/>
+        <Display text = 'Bad' value={bad}/>
+        <Display text = 'Total' value={total}/>
+        <Display text = 'Average' value={average}/>
+        <Display text= 'Positive' value={positive} text2='%'/>
+        
       </div>
     </div>
     

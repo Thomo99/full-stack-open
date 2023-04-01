@@ -13,18 +13,35 @@ const App = () => {
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
+  const [total, setTotal] = useState(0)
+  const [score, setScore] = useState(0)
+  const [count, setCount] = useState(0)
+  const [positiveCount, setPositiveCount] = useState(0)
+  
+  const average = score/count;
+  const positive = positiveCount/count * 100;
 
   const setToGood = newValue => {
     console.log('value now', newValue)
     setGood(newValue)
+    setTotal(newValue)
+    setScore(score + 1)
+    setCount(count + 1)
+    setPositiveCount(positiveCount + 1)
   }
   const setToNeutral = newValue => {
     console.log('value now', newValue)
     setNeutral(newValue)
+    setTotal(newValue)
+    setScore(score + 0)
+    setCount(count + 1)
   }
   const setToBad = newValue => {
     console.log('value now', newValue)
     setBad(newValue)
+    setTotal(newValue)
+    setScore(score - 1)
+    setCount(count + 1)
   }
 
   return (
@@ -40,6 +57,9 @@ const App = () => {
         <p>Good {good}</p>
         <p>Neutral {neutral}</p>
         <p>Bad {bad}</p>
+        <p>Total {total}</p>
+        <p>Average {average}</p>
+        <p>Positive {positive}%</p>
       </div>
     </div>
     

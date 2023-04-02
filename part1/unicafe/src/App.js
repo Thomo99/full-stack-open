@@ -6,7 +6,7 @@ const Button = ({update, text}) => {
   )
 }
 
-const Display = ({text, value, text2 = ''}) => <p>{text} {value}{text2}</p>
+const Display = ({text}) => <p>{text}</p>
 
 const Statistics = (props) => {
   return(
@@ -14,12 +14,34 @@ const Statistics = (props) => {
         <h1>Statistics</h1>
         {props.count === 0 ? <Display text = 'No feedback given' value=''/> :
         <>
-        <Display text = 'Good' value={props.good}/>
-        <Display text = 'Neutral' value={props.neutral}/>
-        <Display text = 'Bad' value={props.bad}/>
-        <Display text = 'Total' value={props.total}/>
-        <Display text = 'Average' value={props.average}/>
-        <Display text= 'Positive' value={props.positive} text2='%'/>
+        <table>
+          <tbody>
+            <tr>
+              <td><Display text = 'Good'/></td>
+              <td>{props.good}</td>
+            </tr>
+            <tr>
+              <td><Display text = 'Neutral'/></td>
+              <td>{props.neutral}</td>
+            </tr>
+            <tr>
+              <td><Display text = 'Bad'/></td>
+              <td>{props.bad}</td>
+            </tr>
+            <tr>
+              <td><Display text = 'Total'/></td>
+              <td>{props.total}</td>
+            </tr>
+            <tr>
+              <td><Display text = 'Average'/></td>
+              <td>{props.average}</td>
+            </tr>
+            <tr>
+              <td><Display text= 'Positive'/></td>
+              <td>{props.positive} %</td>
+            </tr>
+          </tbody>
+        </table>
         </>
   }
       </div>
@@ -71,19 +93,6 @@ const App = () => {
         <Button update={() => setToBad(bad + 1)} text='bad'/>
       </div>
         <Statistics count={count} good={good} bad={bad} neutral={neutral} total={total} average={average} positive={positive}/>
-      {/* <div>
-        <h1>Statistics</h1>
-        {count === 0 ? <Display text = 'No feedback given' value=''/> :
-        <>
-        <Display text = 'Good' value={good}/>
-        <Display text = 'Neutral' value={neutral}/>
-        <Display text = 'Bad' value={bad}/>
-        <Display text = 'Total' value={total}/>
-        <Display text = 'Average' value={average}/>
-        <Display text= 'Positive' value={positive} text2='%'/>
-        </>
-  }
-      </div> */}
     </div>
     
   )

@@ -54,13 +54,16 @@ const App = () => {
       </div>
       <div>
         <h1>Statistics</h1>
+        {count === 0 ? <Display text = 'No feedback given' value=''/> :
+        <>
         <Display text = 'Good' value={good}/>
         <Display text = 'Neutral' value={neutral}/>
         <Display text = 'Bad' value={bad}/>
         <Display text = 'Total' value={total}/>
         <Display text = 'Average' value={average}/>
         <Display text= 'Positive' value={positive} text2='%'/>
-        
+        </>
+  }
       </div>
     </div>
     

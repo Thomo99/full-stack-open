@@ -8,6 +8,8 @@ const Button = ({update, text}) => {
 
 const Display = ({text}) => <p>{text}</p>
 
+
+//Statistics Table
 const Statistics = (props) => {
   return(
     <div>
@@ -57,10 +59,10 @@ const App = () => {
   const [score, setScore] = useState(0)
   const [count, setCount] = useState(0)
   const [positiveCount, setPositiveCount] = useState(0)
-  
   const average = score/count;
   const positive = positiveCount/count * 100;
 
+  //Good 
   const setToGood = newValue => {
     console.log('value now', newValue)
     setGood(newValue)
@@ -69,6 +71,7 @@ const App = () => {
     setCount(count + 1)
     setPositiveCount(positiveCount + 1)
   }
+  //Neutral
   const setToNeutral = newValue => {
     console.log('value now', newValue)
     setNeutral(newValue)
@@ -76,6 +79,7 @@ const App = () => {
     setScore(score + 0)
     setCount(count + 1)
   }
+  //Bad
   const setToBad = newValue => {
     console.log('value now', newValue)
     setBad(newValue)

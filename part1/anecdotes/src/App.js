@@ -31,17 +31,33 @@ const App = () => {
     const newVotes = [...votes]
     newVotes[selected] += 1
     setVotes(newVotes)
+    setToHighest()
   }
 
+  //Check for highest number of votes
+  const [highest, setHighest] = useState(0)
+
+  const setToHighest = () => {
+      for (let i=0; i <= votes.length; i ++){
+        if (votes[i] > votes[highest]){
+          setHighest(i)
+        }
+      }
+  }
 
   return (
     <div>
+      <h1>Anecdote of the Day</h1>
       {anecdotes[selected]}
       <div>
         <Button value={() => setToSelected()} text='Next anecdote'/>
         <Button value={() => setVote()} text='Vote'/>
       </div>
-      {votes[selected]}
+      <p>Votes: {votes[selected]}</p>
+      <div>
+        <h1>Highest Voted Anecdote</h1>
+        <p>{anecdotes[highest]}</p>
+      </div>
     </div>
   )
 }

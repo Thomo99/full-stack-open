@@ -25,16 +25,24 @@ const App = () => {
   
 }
 
+
+//Printout of courses
 const Course = ({course}) => {
   return(
     <div>
       <header>
-      <h1>{course.name}</h1>
+        <h1>{course.name}</h1>
       </header>
+      <div>
+      {course.parts.map(part => (
+     <Content key = {part.id} part = {part.name} exercises = {part.exercises} partId = {part.id}/>
+      ))}
+      </div>
     </div>
   )
 }
 
+//Used to display the mapped array of the course parts
 const Content = (props) => {
   return(
   <div>
@@ -51,15 +59,3 @@ export default App
 {/* <total>
         <p>Number of exercises {course.parts.reduce ((total, part) => total + part.exercises, 0 )}</p>
       </total> */}
-      // <div>
-    //   <header>
-    //     <h1>{course.name}</h1>
-    //   </header>
-      
-    //       {course.parts.map(part => (
-    //         <Content key = {part.id} part = {part.name} exercises = {part.exercises} partId = {part.id}/>
-    //       ))}
-       
-      
-        
-    // </div>

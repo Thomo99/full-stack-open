@@ -2,9 +2,9 @@ import Note from './components/Note'
 import {useState, useTransition} from 'react'
 const App = (props) => {
   const [notes, setNotes] = useState(props.notes)
-  const [newNote, setNewNote] = useState(
-    'a new note...'
-  )
+  const [newNote, setNewNote] = useState('')
+  const [showAll, setShowAll] = useState(true)
+
   //add notes
   const addNote = (event) => {
     event.preventDefault()
@@ -21,11 +21,16 @@ const App = (props) => {
     console.log(event.target.value)
     setNewNote(event.target.value)
   }
+  
+  const notesToShow = showAll
+  ? notes
+  :notes.filter(note => note.important === true)
+
   return (
     <div>
       <h1>Notes</h1>
         <ul>
-          {notes.map(note => 
+          {notesToShow.map(note => 
             <Note key={note.id} note={note} />
           )}
         </ul>

@@ -17,6 +17,12 @@ function App() {
       name: newName,
       id: persons.length + 1
     }
+    for (let j = 0; j < persons.length; j++){
+      if (persons[j].name === newName){
+        alert(`${newName} is already added to the phonebook`)
+        return null
+      }
+    }
     setPersons(persons.concat(nameObject))
     setNewName('')
     console.log(persons)
@@ -28,11 +34,6 @@ function App() {
   return (
     <div>
       <h2>Phonebook</h2>
-      <ul>
-        {persons.map(name =>
-          <Name key = {name.id} name = {name} />
-        )}
-      </ul>
       <form onSubmit={addName}>
         <div>
           name: <input 
@@ -45,6 +46,11 @@ function App() {
         </div>
       </form>
       <h2>Numbers</h2>
+      <ul style = {{ listStyle: "none" }}>
+        {persons.map(name =>
+          <Name key = {name.id} name = {name} />
+        )}
+      </ul>
     </div>
   )
 }

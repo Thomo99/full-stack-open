@@ -1,20 +1,23 @@
 import { useState } from "react";
-import Name from "./Name";
+import Person from "./Person";
 
 function App() {
   const [persons, setPersons] = useState([
     {
       name: 'Arto Hellas',
+      number: '040-1234567',
       id: 1,
     }
   ])
   const [newName, setNewName] = useState('')
+  const [newNumber, setNewNumber] = useState('')
   
 
-  const addName = (event) => {
+  const addPerson = (event) => {
     event.preventDefault()
     const nameObject = {
       name: newName,
+      number: newNumber,
       id: persons.length + 1
     }
     for (let j = 0; j < persons.length; j++){
@@ -25,20 +28,31 @@ function App() {
     }
     setPersons(persons.concat(nameObject))
     setNewName('')
+    setNewNumber('')
     console.log(persons)
   }
   const handleNewName = (event) => {
     console.log(event.target.value)
     setNewName(event.target.value)
   }
+  const handleNewNumber = (event) => {
+    console.log(event.target.value)
+    setNewNumber(event.target.value)
+  }
   return (
     <div>
       <h2>Phonebook</h2>
-      <form onSubmit={addName}>
+      <form onSubmit={addPerson}>
         <div>
           name: <input 
           value={newName}
           onChange={handleNewName}
+          />
+        </div>
+        <div>
+          number: <input 
+          value={newNumber}
+          onChange={handleNewNumber}
           />
         </div>
         <div>
@@ -47,8 +61,8 @@ function App() {
       </form>
       <h2>Numbers</h2>
       <ul style = {{ listStyle: "none" }}>
-        {persons.map(name =>
-          <Name key = {name.id} name = {name} />
+        {persons.map(person =>
+          <Person key = {person.id} name = {person.name} number = {person.number}/>
         )}
       </ul>
     </div>

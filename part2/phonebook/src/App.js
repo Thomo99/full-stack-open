@@ -1,19 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Person from "./Person";
+import axios from "axios";
 
 function App() {
-  const [persons, setPersons] = useState([
-    {
-      name: 'Arto Hellas',
-      number: '040-1234567',
-      id: 1,
-    }
-  ])
+  const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [showAll, setShowAll] = useState(true)
   const [newSearch, setNewSearch]= useState('')
   
+  useEffect (() => {
+    console.log('effect')
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        console.log('promise fulfilled')
+        setPersons(response.data)
+      })
+  }, [])
 
   const addPerson = (event) => {
     event.preventDefault()
@@ -34,8 +38,8 @@ function App() {
     console.log(persons)
   }
   const namesToShow = showAll
-    ? persons.filter(person => person.name.toLowerCase().includes(newSearch.toLowerCase()))
-    : persons
+    ? persons
+    : persons.filter(person => person.name.toLowerCase().includes(newSearch.toLowerCase()))
 
   const handleNewName = (event) => {
     console.log(event.target.value)
@@ -46,6 +50,7 @@ function App() {
     setNewNumber(event.target.value)
   }
   const handleNewSearch = (event) => {
+    setShowAll(false)
     console.log(event.target.value)
     setNewSearch(event.target.value)
   }

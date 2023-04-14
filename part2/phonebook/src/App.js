@@ -9,6 +9,7 @@ function App() {
   const [showAll, setShowAll] = useState(true)
   const [newSearch, setNewSearch]= useState('')
   
+  //Fill database
   useEffect (() => {
     console.log('effect')
     axios
@@ -18,7 +19,7 @@ function App() {
         setPersons(response.data)
       })
   }, [])
-
+  //Add to database
   const addPerson = (event) => {
     event.preventDefault()
     const nameObject = {
@@ -40,8 +41,12 @@ function App() {
       setNewNumber('')
       console.log(persons)
     })
-
   }
+  //Remove from database
+  const deleteThisPerson = (id) => {
+    console.log('Person delete button with id of: ' + id)
+  }
+
   const namesToShow = showAll
     ? persons
     : persons.filter(person => person.name.toLowerCase().includes(newSearch.toLowerCase()))
@@ -89,7 +94,12 @@ function App() {
       <h2>Numbers</h2>
       <ul style = {{ listStyle: "none" }}>
         {namesToShow.map(person =>
-          <Person key = {person.id} name = {person.name} number = {person.number}/>
+          <Person
+          key = {person.id} 
+          name = {person.name} 
+          number = {person.number}
+          deletePerson={() => deleteThisPerson(person.id)}
+          />
         )}
       </ul>
     </div>

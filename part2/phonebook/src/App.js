@@ -32,10 +32,15 @@ function App() {
         return null
       }
     }
-    setPersons(persons.concat(nameObject))
-    setNewName('')
-    setNewNumber('')
-    console.log(persons)
+    axios
+    .post('http://localhost:3001/persons', nameObject)
+    .then(response => {
+      setPersons(persons.concat(nameObject))
+      setNewName('')
+      setNewNumber('')
+      console.log(persons)
+    })
+
   }
   const namesToShow = showAll
     ? persons

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Person from "./Person";
-import axios from "axios";
+import phoneService from "./phoneService";
+import { v4 as uuidv4 } from 'uuid';
 
 function App() {
   const [persons, setPersons] = useState([])
@@ -11,11 +12,9 @@ function App() {
   
   //Fill database
   useEffect (() => {
-    console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
+    phoneService
+      .getAll()
       .then(response => {
-        console.log('promise fulfilled')
         setPersons(response.data)
       })
   }, [])
@@ -25,7 +24,7 @@ function App() {
     const nameObject = {
       name: newName,
       number: newNumber,
-      id: persons.length + 1
+      id: uuidv4()
     }
     for (let j = 0; j < persons.length; j++){
       if (persons[j].name === newName){
@@ -33,13 +32,16 @@ function App() {
         return null
       }
     }
-    axios
-    .post('http://localhost:3001/persons', nameObject)
+    phoneService
+    .create(nameObject)
     .then(response => {
-      setPersons(persons.concat(nameObject))
+      setPersons(persons.concat(response.data))
       setNewName('')
       setNewNumber('')
       console.log(persons)
+    })
+    .catch(error => {
+      console.log('error')
     })
   }
   //Remove from database
@@ -48,8 +50,8 @@ function App() {
     const person = persons.find(n => n.id ===id)
     const deletePerson = { ...person, deleted: true }
 
-    axios
-    .delete(url)
+    phoneService
+    .deletePerson(id)
     .then(response => {
       // handle success
       setPersons(persons.filter((person) => person.id !== id))

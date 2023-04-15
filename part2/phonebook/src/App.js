@@ -44,7 +44,20 @@ function App() {
   }
   //Remove from database
   const deleteThisPerson = (id) => {
-    console.log('Person delete button with id of: ' + id)
+    const url = `http://localhost:3001/persons/${id}`
+    const person = persons.find(n => n.id ===id)
+    const deletePerson = { ...person, deleted: true }
+
+    axios
+    .delete(url)
+    .then(response => {
+      // handle success
+      setPersons(persons.filter((person) => person.id !== id))
+    })
+    .catch(error => {
+      // handle error
+      console.log(error)
+    })
   }
 
   const namesToShow = showAll
@@ -64,6 +77,11 @@ function App() {
     console.log(event.target.value)
     setNewSearch(event.target.value)
   }
+  const handleDelete = (id) => {
+    if (window.confirm("Delete this person?")) {
+      deleteThisPerson(id);
+    }
+  };
   return (
     <div>
       <h2>Phonebook</h2>
@@ -98,7 +116,7 @@ function App() {
           key = {person.id} 
           name = {person.name} 
           number = {person.number}
-          deletePerson={() => deleteThisPerson(person.id)}
+          handleDelete = {() => handleDelete(person.id)}
           />
         )}
       </ul>

@@ -28,8 +28,17 @@ function App() {
     }
     for (let j = 0; j < persons.length; j++){
       if (persons[j].name === newName){
-        alert(`${newName} is already added to the phonebook`)
-        return null
+        const result = window.confirm(`${newName} is already added to the phonebook, would you like to update it?`)
+        if (result){
+        phoneService
+        .update(persons[j].id, nameObject)
+        .then(response => {
+          setPersons(persons.map(person => person.id !== persons[j].id ? person : response.data))
+        })}
+        else{
+          console.log('cancelled')
+        }
+        
       }
     }
     phoneService

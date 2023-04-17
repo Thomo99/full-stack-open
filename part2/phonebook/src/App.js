@@ -19,62 +19,49 @@ function App() {
       })
   }, [])
   //Add to database
+  // function to create new name
   const addPerson = (event) => {
     event.preventDefault()
     const nameObject = {
+      // receives content from the components newName state
       name: newName,
       number: newNumber,
     }
 
     const existing_names = persons.map(person => person.name)
 
-
     if (existing_names.includes(newName)) {
       const msg = `${newName} is already added to the phonebook. Replace the old number with the new one?`
       const confirm = window.confirm(msg)
       if (confirm) {
         updateName(nameObject)
-      } 
-    }
-
-    const updateName = (nameObject) => {
-      const update_person = persons.find(p => p.name === nameObject.name)
-      const update_id = update_person.id
+        setNewName('')
+        setNewNumber('')
+      }
+    } else {
       phoneService
-      .update(update_id, nameObject)
-      .then(returnedPerson =>
-        setPersons(persons.map(person => person.id !== update_id ? person : returnedPerson))
-      )
+        .create(nameObject)
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson))
+          setNewName('')
+          setNewNumber('')
+        })
+        .catch(error => {
+          console.log('error')
+        })
+    }
+  }
+
+  const updateName = (nameObject) => {
+    const update_person = persons.find(p => p.name === nameObject.name)
+    const update_id = update_person.id
+    phoneService
+    .update(update_id, nameObject)
+    .then(returnedPerson =>
+      setPersons(persons.map(person => person.id !== update_id ? person : returnedPerson))
+    )
     }
 
-
-    // for (let j = 0; j < persons.length; j++){
-    //   if (persons[j].name === newName){
-    //     const result = window.confirm(`${newName} is already added to the phonebook, would you like to update it?`)
-    //     if (result){
-    //     phoneService
-    //     .update(persons[j].id, {number: newNumber})
-    //     .then(response => {
-    //       setPersons(persons.map(person => person.id !== persons[j].id ? person : response.data))
-    //     })}
-    //     else{
-    //       console.log('cancelled')
-    //     }
-        
-    //   }
-    // }
-    phoneService
-    .create(nameObject)
-    .then(response => {
-      setPersons(persons.concat(response.data))
-      setNewName('')
-      setNewNumber('')
-      console.log(persons)
-    })
-    .catch(error => {
-      console.log('error')
-    })
-  }
   //Remove from database
   const deleteThisPerson = (id) => {
     const url = `http://localhost:3001/persons/${id}`
@@ -146,7 +133,7 @@ function App() {
       <ul style = {{ listStyle: "none" }}>
         {namesToShow.map(person =>
           <Person
-          key = {person.id} 
+          key = {person.name} 
           name = {person.name} 
           number = {person.number}
           handleDelete = {() => handleDelete(person.id)}

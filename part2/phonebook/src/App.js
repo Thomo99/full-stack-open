@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Person from "./Person";
 import phoneService from "./phoneService";
-import { v4 as uuidv4 } from 'uuid';
+//import { v4 as uuidv4 } from 'uuid';
 
 function App() {
   const [persons, setPersons] = useState([])
@@ -24,23 +24,45 @@ function App() {
     const nameObject = {
       name: newName,
       number: newNumber,
-      id: uuidv4()
     }
-    for (let j = 0; j < persons.length; j++){
-      if (persons[j].name === newName){
-        const result = window.confirm(`${newName} is already added to the phonebook, would you like to update it?`)
-        if (result){
-        phoneService
-        .update(persons[j].id, nameObject)
-        .then(response => {
-          setPersons(persons.map(person => person.id !== persons[j].id ? person : response.data))
-        })}
-        else{
-          console.log('cancelled')
-        }
+
+    const existing_names = persons.map(person => person.name)
+
+
+    if (existing_names.includes(newName)) {
+      const msg = `${newName} is already added to the phonebook. Replace the old number with the new one?`
+      const confirm = window.confirm(msg)
+      if (confirm) {
+        updateName(nameObject)
+      } 
+    }
+
+    const updateName = (nameObject) => {
+      const update_person = persons.find(p => p.name === nameObject.name)
+      const update_id = update_person.id
+      phoneService
+      .update(update_id, nameObject)
+      .then(returnedPerson =>
+        setPersons(persons.map(person => person.id !== update_id ? person : returnedPerson))
+      )
+    }
+
+
+    // for (let j = 0; j < persons.length; j++){
+    //   if (persons[j].name === newName){
+    //     const result = window.confirm(`${newName} is already added to the phonebook, would you like to update it?`)
+    //     if (result){
+    //     phoneService
+    //     .update(persons[j].id, {number: newNumber})
+    //     .then(response => {
+    //       setPersons(persons.map(person => person.id !== persons[j].id ? person : response.data))
+    //     })}
+    //     else{
+    //       console.log('cancelled')
+    //     }
         
-      }
-    }
+    //   }
+    // }
     phoneService
     .create(nameObject)
     .then(response => {

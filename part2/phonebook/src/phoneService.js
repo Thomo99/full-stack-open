@@ -10,8 +10,8 @@ const create = newObject => {
 }
 
 const update = (id, newObject) => {
-    const request=  axios.put(`${baseUrl}/${id}`, newObject);
-    return request.then(resposne => resposne.data)
+    const request=  axios.patch(`${baseUrl}/${id}`, newObject);
+    return request.then(response => response.data)
 }
 
 const deletePerson = (id) => {

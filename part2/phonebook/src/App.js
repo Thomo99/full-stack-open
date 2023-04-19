@@ -72,6 +72,11 @@ const App = () => {
       setTimeout(() => {
         setMessage(null)
       }, 5000)
+      personService
+      .getAll()
+      .then(allPersons => {
+        setPersons(allPersons)
+      })
     })
     
   }
@@ -84,7 +89,11 @@ const App = () => {
         .deletePerson(person.id)
         .then(persons =>
           setPersons(persons)
-    )}
+    )
+  setMessage(`${person.name} successfully deleted`)}
+  setTimeout(() => {
+    setMessage(null)
+  }, 5000)
   }
 
   const handleNameChange = (event) => {

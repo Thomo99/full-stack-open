@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import Person from './Person'
 import personService from './persons'
+import Notification from './Notification'
+import './index.css'
 
 const App = () => {
   const [ persons, setPersons ] = useState([])
@@ -8,6 +10,7 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [showAll, setShowAll] = useState(true)
   const [newSearch, setNewSearch]= useState('')
+  const [message, setMessage] = useState(null)
 
   useEffect(() => {
     personService
@@ -33,6 +36,10 @@ const App = () => {
       const confirm = window.confirm(msg)
       if (confirm) {
         updateName(nameObject)
+        setMessage(`${newName} successfully updated!`)
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
         setNewName('')
         setNewNumber('')
       }
@@ -41,6 +48,10 @@ const App = () => {
         .create(nameObject)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
+          setMessage(`${newName} successfully added!`)
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
           setNewName('')
           setNewNumber('')
         })
@@ -99,6 +110,7 @@ const App = () => {
         />
       </div>
       <h2>Add new contact</h2>
+      <Notification message={message}/>
       <form onSubmit={addName}>
         <div>
           name: <input  type='text' value={newName} onChange={handleNameChange} /><br />

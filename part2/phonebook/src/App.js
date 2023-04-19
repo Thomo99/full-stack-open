@@ -1,26 +1,24 @@
-import { useState, useEffect } from "react";
-import Person from "./Person";
-import phoneService from "./phoneService";
-//import { v4 as uuidv4 } from 'uuid';
+import React, { useState, useEffect } from 'react'
+import Person from './Person'
+import personService from './persons'
 
-function App() {
-  const [persons, setPersons] = useState([])
-  const [newName, setNewName] = useState('')
-  const [newNumber, setNewNumber] = useState('')
+const App = () => {
+  const [ persons, setPersons ] = useState([])
+  const [ newName, setNewName ] = useState('')
+  const [ newNumber, setNewNumber ] = useState('')
   const [showAll, setShowAll] = useState(true)
   const [newSearch, setNewSearch]= useState('')
-  
-  //Fill database
-  useEffect (() => {
-    phoneService
+
+  useEffect(() => {
+    personService
       .getAll()
-      .then(response => {
-        setPersons(response.data)
+      .then(allPersons => {
+        setPersons(allPersons)
       })
   }, [])
-  //Add to database
+
   // function to create new name
-  const addPerson = (event) => {
+  const addName = (event) => {
     event.preventDefault()
     const nameObject = {
       // receives content from the components newName state
@@ -39,69 +37,58 @@ function App() {
         setNewNumber('')
       }
     } else {
-      phoneService
+      personService
         .create(nameObject)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
           setNewName('')
           setNewNumber('')
         })
-        .catch(error => {
-          console.log('error')
-        })
     }
   }
+
 
   const updateName = (nameObject) => {
     const update_person = persons.find(p => p.name === nameObject.name)
     const update_id = update_person.id
-    phoneService
+    personService
     .update(update_id, nameObject)
     .then(returnedPerson =>
       setPersons(persons.map(person => person.id !== update_id ? person : returnedPerson))
     )
-    }
+    
+  }
 
-  //Remove from database
-  const deleteThisPerson = (id) => {
-    const url = `http://localhost:3001/persons/${id}`
-    const person = persons.find(n => n.id ===id)
-    const deletePerson = { ...person, deleted: true }
+  const deleteName = (person) => {
+    const msg = `Delete ${person.name}?`
+    const confirm = window.confirm(msg)
+    if (confirm) {
+      personService
+        .deletePerson(person.id)
+        .then(persons =>
+          setPersons(persons)
+    )}
+  }
 
-    phoneService
-    .deletePerson(id)
-    .then(response => {
-      // handle success
-      setPersons(persons.filter((person) => person.id !== id))
-    })
-    .catch(error => {
-      // handle error
-      console.log(error)
-    })
+  const handleNameChange = (event) => {
+    setNewName(event.target.value)
+  }
+
+  const handleNumberChange = (event) => {
+    setNewNumber(event.target.value)
   }
 
   const namesToShow = showAll
     ? persons
     : persons.filter(person => person.name.toLowerCase().includes(newSearch.toLowerCase()))
 
-  const handleNewName = (event) => {
-    console.log(event.target.value)
-    setNewName(event.target.value)
-  }
-  const handleNewNumber = (event) => {
-    console.log(event.target.value)
-    setNewNumber(event.target.value)
-  }
-  const handleNewSearch = (event) => {
-    setShowAll(false)
-    console.log(event.target.value)
-    setNewSearch(event.target.value)
-  }
-  const handleDelete = (id) => {
-    if (window.confirm("Delete this person?")) {
-      deleteThisPerson(id);
+    const handleNewSearch = (event) => {
+      setShowAll(false)
+      console.log(event.target.value)
+      setNewSearch(event.target.value)
     }
-  };
+
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -111,37 +98,27 @@ function App() {
           onChange={handleNewSearch}
         />
       </div>
-      <h2>Add new</h2>
-      <form onSubmit={addPerson}>
+      <h2>Add new contact</h2>
+      <form onSubmit={addName}>
         <div>
-          name: <input 
-          value={newName}
-          onChange={handleNewName}
-          />
+          name: <input  type='text' value={newName} onChange={handleNameChange} /><br />
+          number: <input  type='text' value={newNumber} onChange={handleNumberChange} />
         </div>
         <div>
-          number: <input 
-          value={newNumber}
-          onChange={handleNewNumber}
-          />
-        </div>
-        <div>
-          <button type="submit">Add</button>
+          <button type="submit">add</button>
         </div>
       </form>
       <h2>Numbers</h2>
-      <ul style = {{ listStyle: "none" }}>
+      <ul>
         {namesToShow.map(person =>
           <Person
-          key = {person.name} 
-          name = {person.name} 
-          number = {person.number}
-          handleDelete = {() => handleDelete(person.id)}
-          />
+            key={person.name}
+            person={person}
+            deleteEntry={() => deleteName(person)} />
         )}
       </ul>
     </div>
   )
 }
 
-export default App;
+export default App

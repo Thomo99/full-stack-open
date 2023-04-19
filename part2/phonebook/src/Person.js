@@ -1,10 +1,10 @@
 import React from 'react'
 
-export default function Person({ name, number,  handleDelete }) {
+const Person = ({ person, deleteEntry }) => {
   return (
-    <div>
-      <li>{name} {number} <button onClick={handleDelete}>Delete</button> </li>
-    </div>
-    
+    <li>{person.name} {person.number}&nbsp;
+    <button onClick={deleteEntry}>delete</button></li>
   )
 }
+
+export default Person

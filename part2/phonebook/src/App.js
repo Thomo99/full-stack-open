@@ -67,6 +67,12 @@ const App = () => {
     .then(returnedPerson =>
       setPersons(persons.map(person => person.id !== update_id ? person : returnedPerson))
     )
+    .catch (error => {
+      setMessage('Person does not exist')
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+    })
     
   }
 

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-
+import axios from "axios";
+import Country from "./Country";
 
 
 function App() {
@@ -9,14 +10,27 @@ function App() {
   const [showAll, setShowAll] = useState(true)
   
   const handleNewSearch = (event) => {
+    event.preventDefault()
     setShowAll(false)
     console.log(event.target.value)
-    setNewSearch(event.target.value)
+    const searchValue = event.target.value
+   
+    setNewSearch(searchValue, () => {
+      console.log(`searching for ${newSearch}`)
+      axios
+      .get(`https://restcountries.com/v3.1/name/${newSearch}`)
+      .then (response => {
+        setCountries(response.data)
+      })
+      .catch (error => {
+        console.log('error')
+      })
+    })
   }
 
   const countriesToShow = showAll
   ? countries
-  : countries.filter (country => country.toLowerCase.includes(newSearch.toLowerCase()))
+  : countries.filter (country => country.toLowerCase().includes(newSearch.toLowerCase()))
 
 
   return (
@@ -27,7 +41,11 @@ function App() {
       />
       <ul>
         {countriesToShow.map(countries=>
-          {countries.name})}
+        <Country
+          name ={countries.name}
+          />
+          )}
+          
       </ul>
       
     </div>

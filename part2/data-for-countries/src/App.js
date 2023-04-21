@@ -8,29 +8,34 @@ function App() {
   const [countries, setCountries] = useState([])
   const [ newSearch, setNewSearch] = useState('')
   const [showAll, setShowAll] = useState(true)
+
+
   
   const handleNewSearch = (event) => {
-    event.preventDefault()
-    setShowAll(false)
-    console.log(event.target.value)
-    const searchValue = event.target.value
-   
-    setNewSearch(searchValue, () => {
-      console.log(`searching for ${newSearch}`)
-      axios
+    event.preventDefault();
+    setShowAll(false);
+    const searchValue = event.target.value;
+    setNewSearch(searchValue);
+  };
+  
+  useEffect(() => {
+    console.log(`searching for ${newSearch}`);
+    axios
       .get(`https://restcountries.com/v3.1/name/${newSearch}`)
-      .then (response => {
-        setCountries(response.data)
+      .then((response) => {
+        setCountries(response.data);
       })
-      .catch (error => {
-        console.log('error')
-      })
-    })
-  }
+      .catch((error) => {
+        console.log('error');
+      });
+  }, [newSearch]);
 
   const countriesToShow = showAll
   ? countries
-  : countries.filter (country => country.toLowerCase().includes(newSearch.toLowerCase()))
+  : countries.filter((country) =>
+      typeof country.name.common === 'string' &&
+      country.name.common.toLowerCase().includes(newSearch.toLowerCase())
+    );
 
 
   return (
@@ -40,9 +45,11 @@ function App() {
       onChange={handleNewSearch}
       />
       <ul>
-        {countriesToShow.map(countries=>
+        {console.log(countriesToShow)}
+        {countriesToShow.map(country=>
         <Country
-          name ={countries.name}
+          key={country.name.common}
+          name ={country.name.common}
           />
           )}
           

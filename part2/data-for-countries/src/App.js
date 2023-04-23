@@ -44,15 +44,19 @@ function App() {
       value={newSearch}
       onChange={handleNewSearch}
       />
-      <ul>
-        {console.log(countriesToShow)}
-        {countriesToShow.map(country=>
+      <ul style={{listStyleType: "none"}}>
+      {countriesToShow.map((country) => (
         <Country
           key={country.name.common}
-          name ={country.name.common}
-          />
-          )}
-          
+          name={country.name.common}
+        />
+      ))}
+      {countriesToShow.length === 1 && (
+        <div>
+          <p>capital {countriesToShow[0].capital}</p>
+          <p>area {countriesToShow[0].area}</p>
+        </div>
+      )}
       </ul>
       
     </div>

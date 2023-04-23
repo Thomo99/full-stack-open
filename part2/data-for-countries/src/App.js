@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import Country from "./Country";
 
 
 function App() {
@@ -44,20 +43,32 @@ function App() {
       value={newSearch}
       onChange={handleNewSearch}
       />
+      {countriesToShow.length > 1 &&
       <ul style={{listStyleType: "none"}}>
       {countriesToShow.map((country) => (
-        <Country
-          key={country.name.common}
-          name={country.name.common}
-        />
+        <li key={country.name.common}>{country.name.common}</li>
       ))}
+      </ul>
+      }
+      
       {countriesToShow.length === 1 && (
         <div>
+          <h1>{countriesToShow[0].name.common}</h1>
           <p>capital {countriesToShow[0].capital}</p>
           <p>area {countriesToShow[0].area}</p>
+          <div></div>
+          <div>
+            <h2>languages</h2>
+            <ul>
+              {Object.values(countriesToShow[0].languages).map((language) => (
+                <li key={language}>{language}</li>
+              ))}
+            </ul>
+          <img src={countriesToShow[0].flags.png}/>
+          </div>
         </div>
       )}
-      </ul>
+      
       
     </div>
   );

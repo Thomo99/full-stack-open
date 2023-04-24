@@ -37,6 +37,7 @@ function App() {
     );
 
 
+
   return (
     <div>
       <input
@@ -46,7 +47,10 @@ function App() {
       {countriesToShow.length > 1 &&
       <ul style={{listStyleType: "none"}}>
       {countriesToShow.map((country) => (
+        <div>
         <li key={country.name.common}>{country.name.common}</li>
+        <button onClick={() => setNewSearch(country.name.common)}>show</button>
+        </div>
       ))}
       </ul>
       }

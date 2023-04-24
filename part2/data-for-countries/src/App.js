@@ -9,6 +9,7 @@ function App() {
   const [showAll, setShowAll] = useState(true)
 
 
+
   
   const handleNewSearch = (event) => {
     event.preventDefault();
@@ -28,6 +29,7 @@ function App() {
         console.log('error');
       });
   }, [newSearch]);
+
 
   const countriesToShow = showAll
   ? countries

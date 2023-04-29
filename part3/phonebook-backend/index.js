@@ -3,7 +3,7 @@ const app = express()
 
 app.use(express.json())
 
-let phonebook = [
+let persons = [
     { 
       "id": 1,
       "name": "Arto Hellas", 
@@ -26,8 +26,8 @@ let phonebook = [
     }
 ]
 //get
-app.get('/api/phonebook', (request, response) => {
-    response.json(phonebook)
+app.get('/api/persons', (request, response) => {
+    response.json(persons)
 })
 
 

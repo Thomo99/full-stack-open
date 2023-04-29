@@ -30,6 +30,25 @@ app.get('/api/persons', (request, response) => {
     response.json(persons)
 })
 
+app.get('/info', (request, response) => {
+
+  const date = new Date('Sat Jan 22 2022 22:27:20 GMT+1000');
+  const options = {
+    weekday: 'short',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+    timeZone: 'Australia/Sydney'
+  };
+  const formattedDate = date.toLocaleString('en-AU', options);
+  
+  console.log(formattedDate);
+  response.send(`Phonebook has info for ${persons.length} people \n ${formattedDate}`)
+})
+
 
 const PORT = 3001
 app.listen(PORT)

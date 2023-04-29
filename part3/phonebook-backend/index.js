@@ -60,6 +60,32 @@ app.get('/api/persons/:id', (request, response) => {
   }
 })
 
+//post
+const generateId = () => {
+  const id = Math.floor(Math.random() * 100) + 1;
+  return id;
+}
+
+app.post('/api/persons/', (request, response) => {
+  const body = request.body
+
+  if(!body.content) {
+    return response.status(400).json({
+      error: 'content missing'
+  })
+  }
+
+  const person = {
+    id: generateId(),
+    name: body.name,
+    number: body.number,  
+  }
+
+  persons = persons.concat(person)
+
+  response.json(person)
+})
+
 //delete
 app.delete('/api/persons/:id', (request, resposne) => {
   const id = Number(request.params.id)

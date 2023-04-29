@@ -69,16 +69,28 @@ const generateId = () => {
 app.post('/api/persons/', (request, response) => {
   const body = request.body
 
-  if(!body.content) {
-    return response.status(400).json({
-      error: 'content missing'
-  })
-  }
+  // if(!body.content) {
+  //   return response.status(400).json({
+  //     error: 'content missing'
+  // })
+  // }
 
   const person = {
     id: generateId(),
     name: body.name,
     number: body.number,  
+  }
+
+  for (const p of persons){
+    if (person.name == p.name){
+      return response.status(400).json({
+        error: 'name already in phonebook'
+    }) 
+    } else if (person.name == '' || person.number ==''){
+      return response.status(400).json({
+        error: 'content missing'
+    })
+    }
   }
 
   persons = persons.concat(person)
